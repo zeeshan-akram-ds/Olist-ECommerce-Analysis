@@ -1,0 +1,26 @@
+# === Data & Outputs ===
+raw_data/
+outputs/
+
+# === Images ===
+images/
+
+# === Notebooks & Python ===
+.ipynb_checkpoints/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# === Environment ===
+# Ignore any virtual environment folders
+.venv/
+venv/
+*.env
+.env
+
+# Windows
+Thumbs.db
+
+# VS Code
+.vscode/
