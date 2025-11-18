@@ -43,6 +43,12 @@ I engineered several new features to move from raw data to business metrics:
 ### C. Exploratory Data Analysis (EDA) (Notebook 02)
 This is where the "story" was uncovered. My analysis was not just a collection of charts but a focused investigation to prove or disprove hypotheses.
 
+### D. Customer Segmentation (Notebook 03)
+I moved from order-level analysis to customer-level analysis using the **RFM (Recency, Frequency, Monetary)** model.
+* **Data Prep:** Aggregated the master table to customer-level, handling the extreme skew (97% one-time buyers) by using custom, logic-based scoring rather than standard quantiles for Frequency.
+* **Segmentation:** Defined 5 actionable segments: `Loyalists`, `Promising`, `New`, `At Risk`, and `Lost`.
+* **Cross-Analysis:** Merged operational metrics back into customer segments to determine if poor logistics caused customer churn.
+
 ---
 
 ## 4. Key Findings & Actionable Recommendations
@@ -57,7 +63,8 @@ My analysis is definitive: **customers care about delivery, not price.**
 
 **Recommendation:** All business efforts to improve satisfaction must be focused on logistics.
 
-
+![Average Review Score by Delivery Status](images/average_review_by_del_status.png)
+*Figure 1: The "Satisfaction Cliff" - On-time deliveries average 4.2 stars, while late deliveries drop to 2.5.*
 
 ### Finding 2: The "Inconsistency" Problem
 The business doesn't have an "average" speed problem; it has an **unreliability problem.**
@@ -75,12 +82,35 @@ I isolated the primary sources of delays:
 * **WHAT (Product Failure):** After filtering for significant sample sizes, the worst delays come from "unexpected" categories like **`fashion_shoes`** and **`art`**, which do not match customer expectations for small items.
     * **Recommendation:** Investigate the supply chain for these specific categories.
 
+![Top 10 Worst States by Delivery Delta](images/top_worst_states_by_delivery.png)
+*Figure 2: Geographic Network Failure - Remote states like RO and AM face 18+ day delays.*
+
 ### Finding 4: The "High-Value" vs. "High-Volume" Categories
 Not all products are created equal. My revenue analysis found two distinct business models.
 
 * **Volume Driver:** `bed_bath_table` (Home Goods) is **#1 in sales volume** but only #3 in revenue.
 * **Value Driver:** `watches_gifts` is only **#8 in sales volume** but is the **#2 largest source of revenue**.
 * **Recommendation:** The business should protect its "Value Driver" categories and focus on a high-volume, low-margin strategy for its "Volume Drivers."
+
+![Revenue vs Review Score Quadrant](images/quadrant_analysis.png)
+*Figure 3: Strategic Quadrant Analysis - No high-revenue categories suffer from low satisfaction.*
+
+### Finding 5: The "Leaky Bucket" & The Hidden Gold Mine
+My RFM analysis revealed a severe retention crisis but also a massive un-tapped opportunity.
+
+* **The Crisis:** The business is a "leaky bucket." **72%** of customers fall into the "At Risk" or "Lost" segments (one-time buyers who never returned).
+* **The Hidden Gold ("Promising" Segment):** I discovered a specific cohort of one-time buyers (`Promising`) who spend **significantly more on average (~400 BRL)** than even the `Loyalists` (~310 BRL).
+* **Recommendation:** Shift marketing focus immediately to the **`Promising`** segment. These 5,595 customers have high spending power and recent interest. A targeted "Second Purchase" campaign here will generate the highest ROI.
+
+![Segment Revenue Distribution](images/segment_revenue_dist.png)
+*Figure 4: Revenue Risk - The business is dependent on "At Risk" and "Lost" customers for the majority of revenue.*
+
+### Finding 6: Poor Logistics is Driving Churn (Causal Link)
+By linking the RFM segments back to logistics data, I found the *cause* of the churn.
+
+* **The Proof:** The **"At Risk"** segment received the **worst delivery service** (lowest average `delivery_delta`) and gave the **lowest review scores**.
+* **The Conclusion:** Customers aren't just drifting away; they are being pushed away by bad experiences.
+* **Recommendation:** "Win-Back" campaigns for "At Risk" customers must focus on **service recovery** (e.g., "Guaranteed Fast Shipping" vouchers) rather than generic discounts, as the root cause of their churn was logistics failure.
 
 ## 5. Tools & Technologies
 * **Python 3.10**
@@ -107,3 +137,4 @@ Not all products are created equal. My revenue analysis found two distinct busin
 4.  **Run the notebooks:**
     * Open `01_Data_Cleaning_and_Integration.ipynb` and run all cells. This will generate the `master_data.csv` in the `outputs/` folder.
     * Open `02_Analysis.ipynb` to review the complete exploratory data analysis.
+    * Open `03_RFM_Analysis.ipynb` to view the customer segmentation, value analysis, and strategic marketing playbook.
