@@ -135,6 +135,6 @@ By linking the RFM segments back to logistics data, I found the *cause* of the c
     * Download the Olist dataset from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
     * Unzip and place all 9 `.csv` files into the `raw_data/` folder.
 4.  **Run the notebooks:**
-    * Open `01_Data_Cleaning_and_Integration.ipynb` and run all cells. This will generate the `master_data.csv` in the `outputs/` folder.
+    * Open `01_Data_Cleaning_and_Integration.ipynb` and run all cells. This will generate the `cleaned_data.csv` in the `outputs/` folder.
     * Open `02_Analysis.ipynb` to review the complete exploratory data analysis.
     * Open `03_RFM_Analysis.ipynb` to view the customer segmentation, value analysis, and strategic marketing playbook.
