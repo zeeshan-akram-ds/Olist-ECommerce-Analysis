@@ -1,140 +1,98 @@
-# Olist E-commerce Analysis: A Deep Dive into Logistics, Satisfaction, and Profitability
+# **Olist E-commerce Analysis: Revenue, Logistics, and Retention**
 
-**Author:** Zeeshan Akram  <br>
+**Author:** Zeeshan Akram
+
 **LinkedIn:** [LinkedIn Profile](https://www.linkedin.com/in/zeeshan-akram-572bbb34a)
 
-## 1. Project Objective
+## **📌 Executive Summary**
 
-This project is a comprehensive analysis of the Olist e-commerce dataset, simulating a real-world business consultation. The primary goal is to move beyond surface-level metrics to identify the core drivers of **customer dissatisfaction** and **operational bottlenecks**.
+This project is a full-stack data analysis of 113,000+ orders from Olist, a Brazilian e-commerce platform. I built this project to move beyond basic charts and find the actual reasons behind customer churn and flatlining revenue.
 
-The analysis provides actionable, data-driven recommendations to help Olist improve its logistics network, enhance customer satisfaction, and optimize its product and seller portfolio.
+The project is split into two phases:
 
-## 2. Key Business Questions
+1. **Python:** Used for deep data cleaning, merging 5 relational tables, and exploratory data analysis.  
+2. **SQL (MySQL):** Used to write advanced business intelligence queries (CTEs, Window Functions) to extract executive-level metrics.
 
-My analysis was structured to answer the most critical questions a business stakeholder would have:
+**Key Project Numbers:**
 
-1.  **The "Satisfaction" Problem:** What is the *true* relationship between delivery performance and customer satisfaction? Are low prices a more significant factor, or is it all about logistics?
-2.  **The "Bottleneck" Problem:** Where do delays actually come from? Is it the sellers (`processing_time`), the shippers (`shipping_time`), or the regional network?
-3.  **The "Portfolio" Problem:** Which product categories are our "Stars" (high revenue, high satisfaction) and which are our "Duds" (low revenue, low satisfaction)?
-4.  **The "Customer" Problem:** Who are our most valuable customers, and what are their purchasing patterns? (To be answered in the RFM Analysis).
+* **113,425** total orders analyzed  
+* **5** complex SQL business queries written  
+* **99.5%** customer churn rate identified  
+* **4** distinct customer segments created (RFM)
 
-## 3. Technical Workflow & Methodology
+## **Phase 1: SQL Business Intelligence**
 
-This project followed a rigorous, professional data analysis workflow.
+*(All SQL scripts are located in the sql\_analysis/ folder)*
 
-### A. Data Cleaning & ETL (Notebook 01)
-* **Source:** 9 separate CSV files from Kaggle, representing 113k+ order items.
-* **Process:**
-    * Loaded and inspected all 9 tables, identifying all Primary and Foreign Keys.
-    * Handled critical data integrity issues (e.g., imputed `0` installments, fixed impossible negative shipping times).
-    * Optimized data types (`category`, `int8`, `float32`) to reduce the final memory footprint by over 60%.
-    * De-duplicated one-to-many tables (e.g., `reviews`, `payments`, `geolocation`) to make them "merge-safe."
-    * Dropped irrelevant columns to create a lean, focused master table.
-* **Result:** A single, clean, and validated `master_df` folder.
+I exported the cleaned dataset into MySQL to answer five critical business questions using advanced SQL techniques.
 
-### B. Feature Engineering (Notebook 02)
-I engineered several new features to move from raw data to business metrics:
-* `approval_time`, `processing_time`, `shipping_time`: To isolate bottlenecks in the fulfillment funnel.
-* `delivery_delta`: The most critical feature, calculating the *days* an order was late or early.
-* `freight_ratio`: A "customer friction" metric (`freight_value` / `price`).
-* `purchase_month`, `purchase_day_of_week`, `purchase_hour`: For baseline business cycle analysis.
-* `delivery_status`: A human-readable category ("Delivered On Time," "Delivered Late," "Not Delivered").
+### **1\. Month-over-Month (MoM) Revenue Growth**
 
-### C. Exploratory Data Analysis (EDA) (Notebook 02)
-This is where the "story" was uncovered. My analysis was not just a collection of charts but a focused investigation to prove or disprove hypotheses.
+* **SQL Used:** LAG() Window Function, Date formatting.  
+* **The Finding:** The platform saw massive growth in 2017, peaking at nearly $1M in revenue during November (Black Friday). However, the hyper-growth stopped in 2018\. From March to August 2018, revenue flattened completely to low single-digit growth.
 
-### D. Customer Segmentation (Notebook 03)
-I moved from order-level analysis to customer-level analysis using the **RFM (Recency, Frequency, Monetary)** model.
-* **Data Prep:** Aggregated the master table to customer-level, handling the extreme skew (97% one-time buyers) by using custom, logic-based scoring rather than standard quantiles for Frequency.
-* **Segmentation:** Defined 5 actionable segments: `Loyalists`, `Promising`, `New`, `At Risk`, and `Lost`.
-* **Cross-Analysis:** Merged operational metrics back into customer segments to determine if poor logistics caused customer churn.
+### **2\. Logistics Impact on Reviews**
 
----
+* **SQL Used:** CASE WHEN, Advanced Aggregations.  
+* **The Finding:** Shipping speed is the absolute biggest driver of customer happiness. Deliveries that arrive late cause a massive spike in 1-star reviews, directly damaging the company's reputation.
 
-## 4. Key Findings & Actionable Recommendations
+### **3\. Top Seller Accountability**
 
-This is the "so what?" of the analysis. I have uncovered several conclusive, high-impact insights.
+* **SQL Used:** Aggregations, ORDER BY logic.  
+* **The Finding:** I ranked the top 10 sellers who bring in the most money, and calculated their specific late-delivery rates. This shows which top partners are helping the brand and which ones are hurting it through poor logistics.
 
-### Finding 1: Logistics is the *Only* Driver of Satisfaction
-My analysis is definitive: **customers care about delivery, not price.**
+### **4\. RFM Customer Segmentation**
 
-* **The Proof:** The correlation between `review_score` and `price` (or `freight_value`) is **zero**. The correlation with `delivery_delta` and `shipping_time` is significant.
-* **The "Satisfaction Cliff":** Orders `Delivered On Time` have a high average review score of **~4.2**. The moment an order is `Delivered Late`, that score is cut almost in half to **~2.5**.
+* **SQL Used:** Common Table Expressions (CTEs), Conditional Logic.  
+* **The Finding:** I successfully replicated Python-based RFM (Recency, Frequency, Monetary) segmentation using pure SQL. I grouped the customer base into "Whales", "Loyalists", and "At-Risk" buyers based on their total spend and order history.
 
-**Recommendation:** All business efforts to improve satisfaction must be focused on logistics.
+### **5\. Cohort Retention Analysis**
 
-![Average Review Score by Delivery Status](images/average_review_by_del_status.png)
-*Figure 1: The "Satisfaction Cliff" - On-time deliveries average 4.2 stars, while late deliveries drop to 2.5.*
+* **SQL Used:** Advanced CTEs, FIRST\_VALUE() Window Function, Date Math.  
+* **The Finding:** The business has a severe retention problem. Over 99% of customers never make a second purchase. For example, the November 2017 promo acquired 7,060 new customers, but only 40 (0.57%) came back the next month. The business relies entirely on acquiring new users because it fails to keep old ones.
 
-### Finding 2: The "Inconsistency" Problem
-The business doesn't have an "average" speed problem; it has an **unreliability problem.**
+## **Phase 2: Python Exploratory Data Analysis**
 
-* **The Insight:** The *median* processing and shipping times are fast (1 and 10 days, respectively). However, the "long tail" of outliers is extreme, with some sellers taking 120+ days and shippers taking 200+ days.
-* **The Action:** The business must focus on reducing these extreme outliers, as they are the source of the 1-star reviews.
+*(Jupyter Notebooks located in the notebooks/ folder)*
 
-### Finding 3: The Three Bottlenecks (Where, Who, & What)
-I isolated the primary sources of delays:
+Before running the SQL analysis, I used Python (Pandas, Seaborn) to clean the raw data and perform initial data exploration.
 
-* **WHERE (Geographic Failure):** The worst-performing states are **`RO` (Rondônia)** and **`AM` (Amazonas)**, with average delays of **+18 days**. This is a logistics network failure.
-    * **Recommendation:** Immediately **increase the `estimated_delivery_date`** for these states. A customer promised 15 days is happier than a customer promised 5 days and getting it in 15.
-* **WHO (Seller Failure):** The business relies on "mega-sellers." Our **2nd biggest seller (`...10ab`) is a critical bottleneck**, with an 11-day average processing lag.
-    * **Recommendation:** Intervene with this high-volume seller immediately to fix their fulfillment process.
-* **WHAT (Product Failure):** After filtering for significant sample sizes, the worst delays come from "unexpected" categories like **`fashion_shoes`** and **`art`**, which do not match customer expectations for small items.
-    * **Recommendation:** Investigate the supply chain for these specific categories.
+### **1\. The "Satisfaction Cliff"**
 
-![Top 10 Worst States by Delivery Delta](images/top_worst_states_by_delivery.png)
-*Figure 2: Geographic Network Failure - Remote states like RO and AM face 18+ day delays.*
+I mapped review scores against delivery times. The data shows a clear cliff: when an order takes longer than 15 days to deliver, the average review score drops from a healthy 4.2 stars down to 2.5 stars.
 
-### Finding 4: The "High-Value" vs. "High-Volume" Categories
-Not all products are created equal. My revenue analysis found two distinct business models.
+### **2\. Freight vs. Price Ratio**
 
-* **Volume Driver:** `bed_bath_table` (Home Goods) is **#1 in sales volume** but only #3 in revenue.
-* **Value Driver:** `watches_gifts` is only **#8 in sales volume** but is the **#2 largest source of revenue**.
-* **Recommendation:** The business should protect its "Value Driver" categories and focus on a high-volume, low-margin strategy for its "Volume Drivers."
+Many customers left 1-star reviews even when the product was delivered on time. The data revealed this happens when the shipping cost (freight) is higher than the actual product price. Customers feel cheated by high shipping fees on cheap items.
 
-![Revenue vs Review Score Quadrant](images/quadrant_analysis.png)
-*Figure 3: Strategic Quadrant Analysis - No high-revenue categories suffer from low satisfaction.*
+## **Strategic Business Recommendations**
 
-### Finding 5: The "Leaky Bucket" & The Hidden Gold Mine
-My RFM analysis revealed a severe retention crisis but also a massive un-tapped opportunity.
+Based on the combined SQL and Python analysis, Olist should take the following actions:
 
-* **The Crisis:** The business is a "leaky bucket." **72%** of customers fall into the "At Risk" or "Lost" segments (one-time buyers who never returned).
-* **The Hidden Gold ("Promising" Segment):** I discovered a specific cohort of one-time buyers (`Promising`) who spend **significantly more on average (~400 BRL)** than even the `Loyalists` (~310 BRL).
-* **Recommendation:** Shift marketing focus immediately to the **`Promising`** segment. These 5,595 customers have high spending power and recent interest. A targeted "Second Purchase" campaign here will generate the highest ROI.
+1. **improve retention:** Since 99.5% of customers do not return, the marketing team must create an aggressive "Second Purchase" campaign. Offer a massive discount (e.g., 30% off) that only unlocks if they buy a second item within 30 days of their first order.  
+2. **Warn Underperforming Sellers:** Use the SQL Seller Performance report to send automated warnings to high-revenue sellers who have high late-delivery rates. If they do not improve their shipping times, lower their ranking in the search results.  
+3. **Set Safer Delivery Expectations:** The business is failing to meet estimated delivery dates in specific regions. By adding just 3 extra buffer days to the estimated delivery date at checkout, **Olist** can manage customer expectations and prevent 1-star reviews.
 
-![Segment Revenue Distribution](images/segment_revenue_dist.png)
-*Figure 4: Revenue Risk - The business is dependent on "At Risk" and "Lost" customers for the majority of revenue.*
+## **Tools & Technologies**
 
-### Finding 6: Poor Logistics is Driving Churn (Causal Link)
-By linking the RFM segments back to logistics data, I found the *cause* of the churn.
+* **Database:** MySQL (Window Functions, CTEs, Joins)  
+* **Programming:** Python  
+* **Libraries:** Pandas, NumPy, Seaborn, Matplotlib  
+* **Environment:** JupyterLab  
+* **Version Control:** Git & GitHub
 
-* **The Proof:** The **"At Risk"** segment received the **worst delivery service** (lowest average `delivery_delta`) and gave the **lowest review scores**.
-* **The Conclusion:** Customers aren't just drifting away; they are being pushed away by bad experiences.
-* **Recommendation:** "Win-Back" campaigns for "At Risk" customers must focus on **service recovery** (e.g., "Guaranteed Fast Shipping" vouchers) rather than generic discounts, as the root cause of their churn was logistics failure.
+## **How to Run This Project**
 
-## 5. Tools & Technologies
-* **Python 3.10**
-* **Pandas:** For all data manipulation, cleaning, and aggregation.
-* **NumPy:** For numerical operations and `np.select()` for feature engineering.
-* **Seaborn & Matplotlib:** For all data visualizations.
-* **JupyterLab:** As the primary development environment.
-* **Git & GitHub:** For version control.
+1. **Clone the repository:**  
+   git clone \[https://github.com/zeeshan-akram-ds/Olist-ECommerce-Analysis\](https://github.com/zeeshan-akram-ds/Olist-ECommerce-Analysis)
 
-## 6. How to Run This Project
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/zeeshan-akram-ds/Olist-ECommerce-Analysis
-    ```
-2.  **Create the environment:**
-    ```bash
-    conda create -n olist python=3.10
-    conda activate olist
-    pip install -r requirements.txt
-    ```
-3.  **Download the data:**
-    * Download the Olist dataset from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
-    * Unzip and place all 9 `.csv` files into the `raw_data/` folder.
-4.  **Run the notebooks:**
-    * Open `01_Data_Cleaning_and_Integration.ipynb` and run all cells. This will generate the `cleaned_data.csv` in the `outputs/` folder.
-    * Open `02_Analysis.ipynb` to review the complete exploratory data analysis.
-    * Open `03_RFM_Analysis.ipynb` to view the customer segmentation, value analysis, and strategic marketing playbook.
+2. **Install requirements:**  
+   pip install \-r requirements.txt
+
+3. **Data Setup:**  
+   * Download the Olist dataset from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).  
+   * Place the raw .csv files into a raw\_data/ folder.  
+   * Run the Python notebooks to clean the data and generate cleaned\_data.csv.  
+4. **SQL Setup:**  
+   * Import cleaned\_data.csv into a MySQL database.  
+   * Run the scripts located in the sql\_analysis/ folder to generate the business insights.
