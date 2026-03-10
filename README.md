@@ -44,7 +44,7 @@ I exported the cleaned dataset into MySQL to answer five critical business quest
 ### **4\. RFM Customer Segmentation**
 
 * **SQL Used:** Common Table Expressions (CTEs), Conditional Logic.  
-* **The Finding:** I successfully replicated Python-based RFM (Recency, Frequency, Monetary) segmentation using pure SQL. I grouped the customer base into "Whales", "Loyalists", and "At-Risk" buyers based on their total spend and order history.
+* **The Finding:** I successfully replicated Python-based RFM (Recency, Frequency, Monetary) segmentation using pure SQL. I grouped the customer base into segments including "Loyalists," "Promising," "New Customers," "At Risk," and "Lost" based on their total spend and order history.
 
 ### **5\. Cohort Retention Analysis**
 
