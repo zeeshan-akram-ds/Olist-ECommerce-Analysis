@@ -4,20 +4,21 @@
 
 **LinkedIn:** [LinkedIn Profile](https://www.linkedin.com/in/zeeshan-akram-572bbb34a)
 
-## **📌 Executive Summary**
+## **Executive Summary**
 
-This project is a full-stack data analysis of 113,000+ orders from Olist, a Brazilian e-commerce platform. I built this project to move beyond basic charts and find the actual reasons behind customer churn and flatlining revenue.
+This project is an end-to-end data analysis of 113,000+ orders from Olist, a Brazilian e-commerce platform. I built this project to move beyond basic charts and find the actual reasons behind customer churn and flatlining revenue.
 
-The project is split into two phases:
+The project is split into three phases:
 
-1. **Python:** Used for deep data cleaning, merging 5 relational tables, and exploratory data analysis.  
-2. **SQL (MySQL):** Used to write advanced business intelligence queries (CTEs, Window Functions) to extract executive-level metrics.
+1. **Python:** Deep data cleaning, merging 5 relational tables, and exploratory data analysis.  
+2. **SQL (MySQL):** Writing business intelligence queries (CTEs, Window Functions) to extract executive-level metrics.  
+3. **Power BI:** Building an interactive, multi-page dashboard to present the findings to stakeholders.
 
 **Key Project Numbers:**
 
 * **113,425** total orders analyzed  
 * **5** complex SQL business queries written  
-* **99.5%** customer churn rate identified  
+* **96.9%** customer churn rate identified  
 * **4** distinct customer segments created (RFM)
 
 ## **Phase 1: SQL Business Intelligence**
@@ -49,7 +50,7 @@ I exported the cleaned dataset into MySQL to answer five critical business quest
 ### **5\. Cohort Retention Analysis**
 
 * **SQL Used:** Advanced CTEs, FIRST\_VALUE() Window Function, Date Math.  
-* **The Finding:** The business has a severe retention problem. Over 99% of customers never make a second purchase. For example, the November 2017 promo acquired 7,060 new customers, but only 40 (0.57%) came back the next month. The business relies entirely on acquiring new users because it fails to keep old ones.
+* **The Finding:** The business has a severe retention problem. Over 96% of customers never make a second purchase. For example, the November 2017 promo acquired 7,060 new customers, but only 40 (0.57%) came back the next month. The business relies entirely on acquiring new users because it fails to keep old ones.
 
 ## **Phase 2: Python Exploratory Data Analysis**
 
@@ -65,17 +66,31 @@ I mapped review scores against delivery times. The data shows a clear cliff: whe
 
 Many customers left 1-star reviews even when the product was delivered on time. The data revealed this happens when the shipping cost (freight) is higher than the actual product price. Customers feel cheated by high shipping fees on cheap items.
 
+## **Phase 3: Interactive Power BI Dashboard**
+
+*(Dashboard file located in the powerbi dashboard/ folder)*
+
+I built a 4-page interactive Power BI dashboard to connect the SQL and Python findings into a clear story for executives. I used DAX to create a custom data model, calculate Year-over-Year (YoY) metrics, and build a summary table to track lifetime customer behavior.
+
+**Dashboard Pages:**
+
+* **Page 1: Executive Overview:** Tracks top-line revenue, order volume, and profit margins. Shows Central region dominance and isolates the top 5 most profitable product categories.  
+* **Page 2: Logistics Deep-Dive:** Uses a geographic map to highlight the exact states causing delivery delays (like Amazonas and Roraima). Proves that late deliveries cut customer satisfaction by nearly 50%.  
+* **Page 3: Customer Retention:** Highlights the 96.9% churn crisis. The data proves that even a perfect 5-star review or an on-time delivery does not result in a second purchase, exposing a total lack of brand loyalty.  
+* **Page 4: Executive Summary:** A clean, printable corporate brief that strips away interactive charts and leaves management with 4 bottom-line KPIs and a 3-step action plan.
+
 ## **Strategic Business Recommendations**
 
-Based on the combined SQL and Python analysis, Olist should take the following actions:
+Based on the combined SQL, Python, and Power BI analysis, Olist should take the following actions:
 
-1. **improve retention:** Since 99.5% of customers do not return, the marketing team must create an aggressive "Second Purchase" campaign. Offer a massive discount (e.g., 30% off) that only unlocks if they buy a second item within 30 days of their first order.  
-2. **Warn Underperforming Sellers:** Use the SQL Seller Performance report to send automated warnings to high-revenue sellers who have high late-delivery rates. If they do not improve their shipping times, lower their ranking in the search results.  
-3. **Set Safer Delivery Expectations:** The business is failing to meet estimated delivery dates in specific regions. By adding just 3 extra buffer days to the estimated delivery date at checkout, **Olist** can manage customer expectations and prevent 1-star reviews.
+1. **Review 3PL Contracts:** The data shows serious delivery problems in the northern network. Leadership should review shipping partners in the 10 worst-performing states and replace carriers that are consistently delivering late.  
+2. **Control heavy shipments:** Large and bulky items, such as office furniture, take the longest to deliver. The company should temporarily limit these shipments to remote areas or increase delivery charges for oversized products.  
+3. **Encourage repeat purchases:** More than 96% of customers do not return after their first order. The marketing team should set up an automatic discount 7 days after a successful first delivery to encourage customers to place another order
 
 ## **Tools & Technologies**
 
 * **Database:** MySQL (Window Functions, CTEs, Joins)  
+* **Data Visualization:** Power BI, DAX, Data Modeling  
 * **Programming:** Python  
 * **Libraries:** Pandas, NumPy, Seaborn, Matplotlib  
 * **Environment:** JupyterLab  
@@ -90,9 +105,12 @@ Based on the combined SQL and Python analysis, Olist should take the following a
    pip install \-r requirements.txt
 
 3. **Data Setup:**  
-   * Download the Olist dataset from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).  
+   * Download the Olist dataset from Kaggle.  
    * Place the raw .csv files into a raw\_data/ folder.  
    * Run the Python notebooks to clean the data and generate cleaned\_data.csv.  
 4. **SQL Setup:**  
    * Import cleaned\_data.csv into a MySQL database.  
-   * Run the scripts located in the sql\_analysis/ folder to generate the business insights.
+   * Run the scripts located in the sql\_analysis/ folder to generate the business insights.  
+5. **View the Dashboard:**  
+   * Open the Project\_Dashboard.pbix file using Power BI Desktop.  
+   * You can also view a static version in the report/ folder as a PDF.
