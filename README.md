@@ -8,6 +8,16 @@
 
 This project is an end-to-end data analysis of 113,000+ orders from Olist, a Brazilian e-commerce platform. I built this project to move beyond basic charts and find the actual reasons behind customer churn and flatlining revenue.
 
+## **Strategic Business Recommendations**
+
+Based on the combined SQL, Python, and Power BI analysis, Olist should take the following actions:
+
+1. **Review 3PL Contracts:** The data shows serious delivery problems in the northern network. Leadership should review shipping partners in the 10 worst-performing states and replace carriers that are consistently delivering late.  
+2. **Control heavy shipments:** Large and bulky items, such as office furniture, take the longest to deliver. The company should temporarily limit these shipments to remote areas or increase delivery charges for oversized products.  
+3. **Encourage repeat purchases:** More than 96% of customers do not return after their first order. The marketing team should set up an automatic discount 7 days after a successful first delivery to encourage customers to place another order
+
+![Interactive Dashboard Demo](./powerbi_dashboard/report/dashboard_demo.gif)
+
 The project is split into three phases:
 
 1. **Python:** Deep data cleaning, merging 5 relational tables, and exploratory data analysis.  
@@ -78,14 +88,6 @@ I built a 4-page interactive Power BI dashboard to connect the SQL and Python fi
 * **Page 2: Logistics Deep-Dive:** Uses a geographic map to highlight the exact states causing delivery delays (like Amazonas and Roraima). Proves that late deliveries cut customer satisfaction by nearly 50%.  
 * **Page 3: Customer Retention:** Highlights the 96.9% churn crisis. The data proves that even a perfect 5-star review or an on-time delivery does not result in a second purchase, exposing a total lack of brand loyalty.  
 * **Page 4: Executive Summary:** A clean, printable corporate brief that strips away interactive charts and leaves management with 4 bottom-line KPIs and a 3-step action plan.
-
-## **Strategic Business Recommendations**
-
-Based on the combined SQL, Python, and Power BI analysis, Olist should take the following actions:
-
-1. **Review 3PL Contracts:** The data shows serious delivery problems in the northern network. Leadership should review shipping partners in the 10 worst-performing states and replace carriers that are consistently delivering late.  
-2. **Control heavy shipments:** Large and bulky items, such as office furniture, take the longest to deliver. The company should temporarily limit these shipments to remote areas or increase delivery charges for oversized products.  
-3. **Encourage repeat purchases:** More than 96% of customers do not return after their first order. The marketing team should set up an automatic discount 7 days after a successful first delivery to encourage customers to place another order
 
 ## **Tools & Technologies**
 
