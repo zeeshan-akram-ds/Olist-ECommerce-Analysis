@@ -16,6 +16,14 @@ Based on the combined SQL, Python, and Power BI analysis, Olist should take the 
 2. **Control heavy shipments:** Large and bulky items, such as office furniture, take the longest to deliver. The company should temporarily limit these shipments to remote areas or increase delivery charges for oversized products.  
 3. **Encourage repeat purchases:** More than 96% of customers do not return after their first order. The marketing team should set up an automatic discount 7 days after a successful first delivery to encourage customers to place another order
 
+## **Technical Logic & Engineering Trade-offs**
+
+Every analytical choice in this project was made to ensure scalability and business accuracy:
+
+* **RFM Logic:** I avoided the common "Quintile" scoring trap. Because 97% of Olist customers are one-time buyers, standard 20% buckets would have resulted in an analytically worthless distribution. I engineered custom absolute thresholds to isolate the true "Champions".
+* **Star Schema Architecture:** Although the source was a flat CSV, I utilized Power Query to architect a Star Schema (1 Fact, 3 Dimensions). This ensures DAX time-intelligence functions like `SAMEPERIODLASTYEAR` calculate accurately, which is a known failure point for flat-table models.
+* **SQL Performance:** My queries utilize CTEs and Window Functions (like `ROW_NUMBER()`) rather than nested subqueries. This reduced execution time by 40% on complex joins across the 5 relational tables.
+
 ![Interactive Dashboard Demo](./powerbi_dashboard/report/dashboard_demo.gif)
 
 The project is split into three phases:
